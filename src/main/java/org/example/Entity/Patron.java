@@ -1,14 +1,16 @@
 package org.example.Entity;
 
+import java.time.LocalDate;
+
 public class Patron {
     private final String patronId;
     private String name;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
     private String phoneNumber;
     private String email;
 
-    public Patron(String patronId, String name,String dateOfBirth,String address,String phoneNumber,String email){
+    public Patron(String patronId, String name,LocalDate dateOfBirth,String address,String phoneNumber,String email){
         this.patronId = patronId;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -27,11 +29,11 @@ public class Patron {
         this.name = name;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

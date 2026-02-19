@@ -1,17 +1,19 @@
 package org.example.Entity;
 
+import java.time.LocalDate;
+
 public class Loan {
     private final String loanId;
     private BookCopy bookCopy;
     private Patron borrower;
-    private String borrowDate;
-    private String submissionDate = null;
+    private final LocalDate borrowDate;
+    private LocalDate submissionDate = null;
 
-    public Loan (String loanId,BookCopy bookCopy,Patron borrower,String borrowDate){
+    public Loan (String loanId,BookCopy bookCopy,Patron borrower){
         this.loanId = loanId;
         this.bookCopy = bookCopy;
         this.borrower = borrower;
-        this.borrowDate = borrowDate;
+        this.borrowDate = LocalDate.now();
 
     }
     public BookCopy getBookCopy() {
@@ -30,19 +32,16 @@ public class Loan {
         this.borrower = borrower;
     }
 
-    public String getBorrowDate() {
+    public LocalDate getBorrowDate() {
         return borrowDate;
     }
 
-    public void setBorrowDate(String borrowDate) {
-        this.borrowDate = borrowDate;
-    }
 
-    public String getSubmissionDate() {
+    public LocalDate getSubmissionDate() {
         return submissionDate;
     }
 
-    public void setSubmissionDate(String submissionDate) {
+    public void setSubmissionDate(LocalDate submissionDate) {
         this.submissionDate = submissionDate;
     }
 
