@@ -1,32 +1,30 @@
 package org.example.Service;
 
 import org.example.Entity.*;
+import org.example.Exception.EntityNotFoundException;
+import org.example.Exception.InvalidInputException;
 import org.example.Repositories.BookRepo;
 import org.example.Repositories.LibraryRepo;
 import org.example.Repositories.LoanRepo;
 import org.example.Repositories.PatronRepo;
 
 import java.util.Collection;
-import java.util.List;
 
 public class LendingService {
-    public static void issueBook(String patronId, String ISBN, String libraryId){
+    public static void issueBook(String patronId, String ISBN, String libraryId) throws InvalidInputException, EntityNotFoundException {
         Patron patron = PatronRepo.getPatronById(patronId);
         if (patron == null){
-            System.out.println("Invalid patron id!");
-            return;
+            throw new EntityNotFoundException("Invalid patron id!");
         }
 
         Library library = LibraryRepo.findLibraryById(libraryId);
         if (library == null){
-            System.out.println("Invalid Library Id!");
-            return;
+            throw new EntityNotFoundException("Invalid Library Id!");
         }
 
         Book book = BookRepo.findByISBN(ISBN);
         if (book == null){
-            System.out.println("invalid isbn");
-            return;
+            throw new EntityNotFoundException("invalid ISBN!");
         }
         Collection<BookCopy> inventory= library.getAllCopies();
 
@@ -40,22 +38,19 @@ public class LendingService {
         }
         System.out.println("The copy of this book is not present in this library!");
 
-//        BookCopy bookCopy =
-//        if ()
+
 
     }
 
-    public static void submitBook(String patronId,String bookCopyId){
+    public static void submitBook(String patronId,String bookCopyId) throws EntityNotFoundException{
         Patron patron = PatronRepo.getPatronById(patronId);
         if (patron == null){
-            System.out.println("Invalid patron id!");
-            return;
+            throw new EntityNotFoundException("Invalid patron id!");
         }
 
         Loan loan = LoanRepo.findLoanByBookCopyId(bookCopyId);
         if (loan == null){
-            System.out.println("No such book issued.");
-            return;
+            throw new EntityNotFoundException("No such book issued.");
         }
 
         LoanRepo.submitBook(loan);
@@ -68,11 +63,29 @@ public class LendingService {
         }
     }
 
-    public static void findHistoryOfPatron(String patronId){
+    public static void findHistoryOfPatron(String patronId) throws EntityNotFoundException{
+        Patron patron = PatronRepo.getPatronById(patronId);
+        if (patron == null){
+            throw new EntityNotFoundException("Invalid patron id!");
+        }
 
+        Collection<Loan> history = LoanRepo.findHistory(patronId);
+        System.out.println("History of Patron with patron_id:" + patronId);
+        for(Loan loan :history){
+            loan.displayInfo();
+        }
     }
 
-    public static void findAllActiveLoansOfPatron(String patronId){
+    public static void findAllActiveLoansOfPatron(String patronId) throws EntityNotFoundException {
+        Patron patron = PatronRepo.getPatronById(patronId);
+        if (patron == null){
+            throw new EntityNotFoundException("Invalid patron id!");
+        }
 
+        Collection<Loan> activeLoans = LoanRepo.findHistory(patronId);
+        System.out.println("Active Loans of Patron with patron_id:" + patronId);
+        for(Loan loan : activeLoans){
+            loan.displayInfo();
+        }
     }
 }

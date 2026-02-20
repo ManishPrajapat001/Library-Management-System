@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class BookRepo {
-    private static Map<String, Book> bookInventory;
+    private static Map<String, Book> bookInventory;//key is ISBN
 
     public static Map<String, Book> getBookInventory() {
         return bookInventory;

@@ -14,7 +14,7 @@ public class LoanRepo {
 
 
     public static void addLoan(BookCopy bookCopy, Patron borrower){
-        if(activeLoans.get(bookCopy.getBookId()) != null){
+        if(activeLoans.get(bookCopy.getBookCopyId()) != null){
             return;
         }
         String id = IdGenerator.generateId("LOAN");
@@ -24,10 +24,10 @@ public class LoanRepo {
 
     public static void submitBook(Loan loan){
         BookCopy bookCopy = loan.getBookCopy();
-        if(activeLoans.get(bookCopy.getBookId()) == null){
+        if(activeLoans.get(bookCopy.getBookCopyId()) == null){
             return;
         }
-        activeLoans.remove(bookCopy.getBookId());
+        activeLoans.remove(bookCopy.getBookCopyId());
         loan.setSubmissionDate(LocalDate.now());
 
         Patron patron = loan.getBorrower();
@@ -39,18 +39,31 @@ public class LoanRepo {
         listOfLoans.add(loan);
     }
 
-    public static boolean isActiveLoan(String patronId){
-        for (List<Loan>loans : loanHistory.values()){
-            for (Loan loan : loans){
-                if (Objects.equals(loan.getBorrower().getPatronId(), patronId)){
-                    return true;
-                }
+    public static boolean isActiveLoanOnPatron(String patronId){
+        for (Loan loan : activeLoans.values()){
+            if (Objects.equals(loan.getBorrower().getPatronId(), patronId)){
+                return true;
             }
         }
         return false;
     }
 
+    public static Collection<Loan> findActiveLoans(String patronId){
+        List<Loan> loanList = new ArrayList<>();
+        for (Loan loan : activeLoans.values()){
+            if(loan.getBorrower().getPatronId().equals(patronId)){
+                loanList.add(loan);
+            }
+
+        }
+        return loanList;
+    }
+
     public static Loan findLoanByBookCopyId(String bookCopyId){
         return activeLoans.get(bookCopyId);
+    }
+
+    public static Collection<Loan> findHistory(String patronId){
+        return loanHistory.get(patronId);
     }
 }

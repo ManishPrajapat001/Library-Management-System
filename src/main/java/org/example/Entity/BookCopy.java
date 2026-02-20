@@ -1,11 +1,11 @@
 package org.example.Entity;
 
 public class BookCopy {
-    private final String bookId;
+    private final String bookCopyId;
     private final Book book;
 
-    BookCopy(String bookId, Book book){
-        this.bookId = bookId;
+    public BookCopy(String bookCopyId, Book book){
+        this.bookCopyId = bookCopyId;
         this.book = book;
     }
 
@@ -14,7 +14,7 @@ public class BookCopy {
         return book;
     }
 
-    public String getBookId() {
-        return bookId;
+    public String getBookCopyId() {
+        return bookCopyId;
     }
 }

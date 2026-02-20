@@ -48,4 +48,20 @@ public class Loan {
     public String getLoanId() {
         return loanId;
     }
+
+    public void displayInfo() {
+        System.out.println("Loan ID: " + loanId);
+        System.out.println("Book Title: " + bookCopy.getBook().getTitle());
+        System.out.println("Copy ID: " + bookCopy.getBookCopyId());
+        System.out.println("Borrower: " + borrower.getName());
+        System.out.println("Borrow Date: " + borrowDate);
+
+        if (submissionDate == null) {
+            System.out.println("Status: Not Returned Yet");
+        } else {
+            System.out.println("Submission Date: " + submissionDate);
+        }
+
+        System.out.println("----------------------------");
+    }
 }

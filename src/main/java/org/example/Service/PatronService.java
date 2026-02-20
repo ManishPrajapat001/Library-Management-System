@@ -1,6 +1,8 @@
 package org.example.Service;
 
 import org.example.Entity.Patron;
+import org.example.Exception.EntityNotFoundException;
+import org.example.Exception.InvalidInputException;
 import org.example.Repositories.LoanRepo;
 import org.example.Repositories.PatronRepo;
 import org.example.Utils.Validator;
@@ -9,45 +11,39 @@ import java.time.LocalDate;
 
 public class PatronService {
 
-    public static void addPatron(String name, LocalDate dateOfBirth, String address, String phoneNumber, String email){
+    public static void addPatron(String name, LocalDate dateOfBirth, String address, String phoneNumber, String email) throws InvalidInputException {
         if(name == null || name.isEmpty()){
-            System.out.println("Name is not given");
-            return;
+            throw new InvalidInputException("Name is not given");
         }
 
         if (!dateOfBirth.isBefore(LocalDate.now())){
-            System.out.println("Invaild Date of Birth");
-            return;
+            throw new InvalidInputException("Invaild Date of Birth");
         }
 
         if (address == null || address.isEmpty()){
-            System.out.println("Invalid Address");
-            return;
+            throw new InvalidInputException("Invalid Address");
         }
 
         if (!Validator.isValidNumber(phoneNumber)){
-            System.out.println("Invalid phone number");
-            return;
+            throw new InvalidInputException("Invalid phone number");
         }
 
         if (!Validator.isValidEmail(email)){
-            System.out.println("Invalid Email Id");
-            return;
+            throw new InvalidInputException("Invalid Email Id");
         }
 
-        PatronRepo.addPatron(name,dateOfBirth,address,phoneNumber,email);
+        String id =PatronRepo.addPatron(name,dateOfBirth,address,phoneNumber,email);
+        System.out.println("Patron Added successfully!,Your id is :"+id);
     }
 
-    public static void removePatron(String patronId){
+    public static void removePatron(String patronId) throws EntityNotFoundException {
         Patron patron = PatronRepo.getPatronById(patronId);
         if (patron == null){
-            System.out.println("Invalid Patron ID!");
-            return;
+            throw new EntityNotFoundException("Patron not found!");
         }
 
-        if (LoanRepo.isActiveLoan(patronId)){
-            System.out.println("Patron have existing loan,clear these before closing account!");
-            return;
+        if (LoanRepo.isActiveLoanOnPatron(patronId)){
+            throw new EntityNotFoundException("Patron have existing loan,clear these before closing account!");
         }
 
         PatronRepo.removePatron(patronId);

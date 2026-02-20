@@ -41,9 +41,12 @@ public class Library {
 
 
     public void addBook(BookCopy bookCopy) {
-        this.inventory.put(bookCopy.getBookId(),bookCopy);
+        this.inventory.put(bookCopy.getBookCopyId(),bookCopy);
     }
 
+    public BookCopy findBook(String bookId){
+        return inventory.get(bookId);
+    }
     public void removeBook(String bookId) {
         this.inventory.remove(bookId);
     }
