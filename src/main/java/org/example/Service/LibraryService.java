@@ -5,11 +5,9 @@ import org.example.Entity.Library;
 import org.example.Exception.EntityNotFoundException;
 import org.example.Exception.InvalidInputException;
 import org.example.Repositories.LibraryRepo;
-import org.example.Repositories.LoanRepo;
-import org.example.Utils.Validator;
 
 public class LibraryService {
-    public static void addLibrary(String libraryName,String location) throws InvalidInputException {
+    public static String addLibrary(String libraryName, String location) throws InvalidInputException {
         if(libraryName.isEmpty()){
             throw new InvalidInputException("Invalid library name!");
         }
@@ -19,7 +17,7 @@ public class LibraryService {
         }
 
         String id = LibraryRepo.addLibrary(libraryName,location);
-        System.out.println("Id for this library is " +id);
+        return ("Id for this library is " +id);
     }
 
     public static void closeLibrary(String closingLibraryId,String substituteLibraryId) throws EntityNotFoundException {
@@ -35,7 +33,7 @@ public class LibraryService {
 
 //        transfer whole inventory to substitute
         for (BookCopy bookCopy: closingLib.getAllCopies()){
-            substitueLib.addBook(bookCopy);
+            substitueLib.addBookCopy(bookCopy);
         }
 
         LibraryRepo.deleteLibrary(closingLibraryId);

@@ -11,6 +11,10 @@ import org.example.Repositories.PatronRepo;
 import java.util.Collection;
 
 public class LendingService {
+    private LendingService() {
+        /* This utility class should not be instantiated */
+    }
+
     public static void issueBook(String patronId, String ISBN, String libraryId) throws InvalidInputException, EntityNotFoundException {
         Patron patron = PatronRepo.getPatronById(patronId);
         if (patron == null){
@@ -28,12 +32,22 @@ public class LendingService {
         }
         Collection<BookCopy> inventory= library.getAllCopies();
 
+
+
         BookCopy physicalBook = null;
         for (BookCopy bookCopy: inventory){
-            if (bookCopy.equals(book)){
-                LoanRepo.addLoan(bookCopy,patron);
-                System.out.println("Book borrowed successfully!");
-                return;
+            if (bookCopy.getBook().getISBN().equals(book.getISBN())){
+                //        if book on already loan
+
+                if(LoanRepo.findLoanByBookCopyId(bookCopy.getBookCopyId()) == null){
+                    LoanRepo.addLoan(bookCopy,patron);
+                    System.out.println("Book borrowed successfully!");
+                    return;
+                }
+                else {
+                    System.out.println("Book is already Borrowed by someone else");
+                }
+
             }
         }
         System.out.println("The copy of this book is not present in this library!");
@@ -82,7 +96,7 @@ public class LendingService {
             throw new EntityNotFoundException("Invalid patron id!");
         }
 
-        Collection<Loan> activeLoans = LoanRepo.findHistory(patronId);
+        Collection<Loan> activeLoans = LoanRepo.findActiveLoans(patronId);
         System.out.println("Active Loans of Patron with patron_id:" + patronId);
         for(Loan loan : activeLoans){
             loan.displayInfo();

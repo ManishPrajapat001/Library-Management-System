@@ -4,13 +4,18 @@ import org.example.Entity.Book;
 import org.example.Entity.BookCopy;
 import org.example.Entity.Library;
 import org.example.Exception.EntityNotFoundException;
+import org.example.Factory.BookCopyFactory;
 import org.example.Repositories.BookRepo;
 import org.example.Repositories.LibraryRepo;
 import org.example.Repositories.LoanRepo;
 import org.example.Utils.IdGenerator;
 
 public class InventoryService {
-    public static void addInventory(String libraryId,String isbn) throws EntityNotFoundException {
+    private InventoryService() {
+        /* This utility class should not be instantiated */
+    }
+
+    public static void addBookCopyToInventory(String libraryId, String isbn) throws EntityNotFoundException {
         Library library = LibraryRepo.findLibraryById(libraryId);
         if (library == null){
             throw new EntityNotFoundException("Invalid library Id!");
@@ -20,10 +25,8 @@ public class InventoryService {
         if(book == null){
             throw new EntityNotFoundException("Invalid ISBN!");
         }
-
-        String id= IdGenerator.generateId("BOOKCOPY");
-        BookCopy bookCopy = new BookCopy(id,book);
-        library.addBook(bookCopy);
+        BookCopy bookCopy = BookCopyFactory.createBookCopy(library,book);
+        library.addBookCopy(bookCopy);
 
         System.out.println("The copy of this book is added to the library");
     }
@@ -60,7 +63,7 @@ public class InventoryService {
         }
 
         senderLib.removeBook(bookCopyId);
-        recieverLib.addBook(bookCopy);
+        recieverLib.addBookCopy(bookCopy);
         System.out.println("This book  transfered successfully!");
 
     }

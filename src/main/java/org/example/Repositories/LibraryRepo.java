@@ -1,5 +1,6 @@
 package org.example.Repositories;
 
+import org.example.Entity.BookCopy;
 import org.example.Entity.Library;
 import org.example.Utils.IdGenerator;
 
@@ -21,5 +22,16 @@ public class LibraryRepo {
     }
     public static Library findLibraryById(String libraryId){
         return libraryList.get(libraryId);
+    }
+
+    public static boolean isBookPresentInAnyLibrary(String isbn) {
+        for(Library library:libraryList.values()){
+            for (BookCopy bookCopy: library.getAllCopies()){
+                if(bookCopy.getBook().getISBN().equals(isbn)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

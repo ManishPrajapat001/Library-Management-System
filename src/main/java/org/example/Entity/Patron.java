@@ -64,4 +64,14 @@ public class Patron {
     public String getPatronId() {
         return patronId;
     }
+
+    public void displayInfo() {
+        System.out.println("Patron ID: " + patronId);
+        System.out.println("Name: " + name);
+        System.out.println("Date of Birth: " + dateOfBirth);
+        System.out.println("Address: " + address);
+        System.out.println("Phone Number: " + phoneNumber);
+        System.out.println("Email: " + email);
+        System.out.println("----------------------------");
+    }
 }

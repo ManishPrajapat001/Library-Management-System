@@ -3,6 +3,7 @@ package org.example.Repositories;
 import org.example.Entity.BookCopy;
 import org.example.Entity.Loan;
 import org.example.Entity.Patron;
+import org.example.Factory.LoanFactory;
 import org.example.Utils.IdGenerator;
 
 import java.time.LocalDate;
@@ -17,9 +18,9 @@ public class LoanRepo {
         if(activeLoans.get(bookCopy.getBookCopyId()) != null){
             return;
         }
-        String id = IdGenerator.generateId("LOAN");
-        Loan loan = new Loan(id,bookCopy,borrower);
-        activeLoans.put(id,loan);
+
+        Loan loan = LoanFactory.createLoan(bookCopy,borrower);
+        activeLoans.put(bookCopy.getBookCopyId(),loan);
     }
 
     public static void submitBook(Loan loan){

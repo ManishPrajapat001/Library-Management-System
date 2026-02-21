@@ -40,7 +40,7 @@ public class Library {
     }
 
 
-    public void addBook(BookCopy bookCopy) {
+    public void addBookCopy(BookCopy bookCopy) {
         this.inventory.put(bookCopy.getBookCopyId(),bookCopy);
     }
 

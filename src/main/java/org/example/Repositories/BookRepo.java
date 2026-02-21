@@ -2,10 +2,7 @@ package org.example.Repositories;
 
 import org.example.Entity.Book;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class BookRepo {
     private static Map<String, Book> bookInventory;//key is ISBN
@@ -45,5 +42,12 @@ public class BookRepo {
             }
         }
         return bookList;
+    }
+
+    public static Collection<Book> getAllBooks() {
+        return bookInventory.values();
+    }
+
+    public static void deleteBook(String isbn) {
     }
 }
