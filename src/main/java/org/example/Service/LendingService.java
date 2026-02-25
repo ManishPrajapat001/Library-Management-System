@@ -34,7 +34,6 @@ public class LendingService {
 
 
 
-        BookCopy physicalBook = null;
         Boolean isBorrowed = false;
         for (BookCopy bookCopy: inventory){
             if (bookCopy.getBook().getISBN().equals(book.getISBN())){
@@ -52,7 +51,7 @@ public class LendingService {
             }
         }
         if(isBorrowed){
-            System.out.println("Book is already Borrowed by someone else")
+            System.out.println("Book is already Borrowed by someone else");
         }
         else{
             System.out.println("The copy of this book is not present in this library!");
